@@ -1,0 +1,789 @@
+<!-- ---- Final Website ---- -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mordern Running Machines</title>
+<style>
+@font-face {
+  font-family: 'Aeonik';
+  src: url('Aeonik-Regular.woff2') format('woff2'),
+       url('Aeonik-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+* { box-sizing: border-box; margin:0; padding:0; font-family:'Aeonik',Arial,sans-serif; }
+body, html { background:#F1F1FA; }
+
+/* NAV */
+nav { display:flex; justify-content:space-between; align-items:flex-start; padding:2rem 3rem 1rem; position:relative; z-index:50; flex-wrap:wrap; }
+.logo,.menu-btn,.fancy-button{opacity:0;animation:fadeIn 2s ease forwards;}
+.logo{font-size:2rem;font-weight:bold;color:#000;animation-delay:0.2s;}
+.nav-text-slider{flex:1;display:flex;justify-content:center;padding:0 2rem;overflow:hidden;}
+.nav-text-slider .inner p{font-size:30px;font-weight:500;color:#111;opacity:0;animation:fadeIn 2s ease forwards;animation-delay:0.3s;text-align:center;}
+.nav-right{display:flex;align-items:flex-start;gap:1rem;animation-delay:0.4s;}
+.menu-btn,.fancy-button{width:130px;height:48px;font-size:1rem;border-radius:999px;text-transform:uppercase;cursor:pointer;border:none;transition:all .3s ease;}
+.menu-btn{background:#000;color:#fff;}
+.menu-btn:hover{background:#333;}
+.fancy-button{position:relative;display:inline-block;color:#000;overflow:hidden;background:#f8f8f8;}
+.fancy-button:before{content:'';position:absolute;bottom:0;left:0;width:0%;height:100%;background:#e0e0e0;transition:all .3s;border-radius:10rem;z-index:-1;}
+.fancy-button:hover:before{width:100%;}
+
+.dropdown{position:absolute;background:#fff;border-radius:8px;box-shadow:0 8px 16px rgba(0,0,0,0.1);width:180px;max-height:0;overflow:hidden;opacity:0;transform:translateY(-6px);transition:all 0.28s ease;pointer-events:none;z-index:60;}
+.dropdown.show{max-height:500px;opacity:1;transform:translateY(0);pointer-events:auto;}
+.dropdown a{display:block;padding:.75rem 1rem;color:#333;text-decoration:none;}
+.dropdown a:hover{background:#f0f0f0;color:#000;animation:floatLink .4s ease;}
+
+/* HERO VIDEO */
+.video-wrapper{margin:28.896px auto 0;position:relative;width:85%;height:60vh;overflow:hidden;border-radius:15px;box-shadow:0 4px 8px rgba(0,0,0,0.2);z-index:5;}
+.video-wrapper video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;border-radius:15px;}
+
+/* TYPING + SVG */
+.text-svg-wrapper{position:relative;margin-top:40px;}
+.below-video-text{text-align:center;font-size:135px;font-weight:500;color:#000;line-height:1.15;position:relative;z-index:30;pointer-events:none;}
+#typingText::after{content:'|';animation:blink 1s infinite;}
+.svg-container{position:absolute;top:20%;left:-20px;width:100%;transform:translateY(-20%);z-index:10;pointer-events:none;opacity:0.95;}
+.svg-container svg{width:100%;height:auto;display:block;}
+.svg-container svg path{stroke-width:40;stroke:rgb(37, 44, 254);fill:none;stroke-dasharray:1000;stroke-dashoffset:1000;transition:stroke-dashoffset 0.12s linear;vector-effect:non-scaling-stroke;}
+
+/* FEATURE SECTION */
+.feature-section{display:flex;align-items:center;justify-content:center;margin:30px auto 60px;max-width:1200px;gap:40px;padding:0 2rem;}
+.feature-video-wrapper{width:105%;max-width:1050px;border-radius:20px;overflow:hidden;transition:transform 0.3s ease;}
+.feature-video-wrapper video{width:100%;height:auto;display:block;object-fit:cover;border-radius:20px;}
+.below-typing-text{font-size:18px;font-weight:400;color:#333;line-height:1.6;text-align:right;max-width:600px;margin-left:auto;transform:translateY(-10px);}
+.below-typing-text .fancy-button{margin-top:20px;float:right;}
+
+/* FEATURED WORK */
+.featured-work-text{font-size:108px;font-weight:400;color:#000;margin:40px 0 60px 5%;text-align:left;opacity:0;transform:translateY(50px);transition:all 1s ease-out;}
+.featured-work-text.revealed{opacity:1;transform:translateY(0);}
+
+.featured-list{display:flex;flex-direction:column;gap:50px;max-width:1200px;margin:0 auto;transform-style:preserve-3d;transform-origin:center top;transition:transform 0.3s ease-out;}
+
+.featured-item{display:flex;align-items:center;gap:60px;opacity:0;transform:translateY(80px);transition:all 1s cubic-bezier(.2,.9,.2,1);}
+.featured-item.revealed{opacity:1;transform:translateY(0);}
+.featured-item img{width:45%;height:300px;object-fit:cover;border-radius:20px;box-shadow:0 10px 25px rgba(0,0,0,0.15);transform:perspective(800px) rotateY(-5deg) scale(0.95);transform-origin:center;transition:transform 1s cubic-bezier(.2,.9,.2,1),box-shadow 0.5s ease;}
+.featured-item.revealed img{animation:imageIn 1.2s ease forwards;}
+.featured-item img:hover{transform:perspective(800px) rotateY(5deg) scale(1.05);box-shadow:0 15px 35px rgba(0,0,0,0.25);}
+.featured-item-text{width:50%; min-width: 50%; transform:translateX(40px);opacity:0;transition:all 1s ease-out;}
+.featured-item.revealed .featured-item-text{opacity:1;transform:translateX(0);animation:textIn 1s ease forwards;animation-delay:0.2s;}
+.featured-item-text h3{font-size:32px;margin-bottom:10px;}
+.featured-item-text p{font-size:18px;line-height:1.6;}
+
+/* COLLECTION SECTION */
+.collection-wrapper {max-width:1200px;margin:20px auto;padding:0 2rem;overflow:hidden;text-align:center;}
+.collection-heading {
+  font-size:80px;
+  font-weight:700;
+  color:#000;
+  margin-bottom:40px;
+  opacity:0;
+  transform:scale(0.7);
+  transition:all 1s ease-out;
+  letter-spacing:2px;
+}
+.collection-heading.revealed {
+  opacity:1;
+  transform:scale(1.1);
+  animation:inflateText 2s ease forwards;
+}
+@keyframes inflateText {
+  0% { transform:scale(0.7); letter-spacing:5px; opacity:0; filter:blur(4px); }
+  50% { transform:scale(1.2); letter-spacing:1px; opacity:1; filter:blur(0); text-shadow:0 0 20px rgba(0,0,0,0.3);}
+  100% { transform:scale(1); text-shadow:0 0 10px rgba(0,0,0,0.15);}
+}
+
+.collection-gallery {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+  scrollbar-width: none;
+}
+.collection-gallery::-webkit-scrollbar { display: none; }
+.collection-item {flex:0 0 auto;width:320px;border-radius:22px;overflow:hidden;transform:translateY(40px);opacity:0;transition:all 0.8s ease-out;position:relative;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,0.1);background:#fff;}
+.collection-item img {width:100%;height:420px;object-fit:cover;border-radius:22px;transition:transform 0.5s ease, filter 0.4s ease;}
+.collection-item:hover img {transform:scale(1.12) rotate(1deg);filter:brightness(1.1) contrast(1.05);}
+.collection-item::before {
+  content:"";
+  position:absolute;
+  top:0;
+  left:-75%;
+  width:50%;
+  height:100%;
+  background:linear-gradient(120deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0.4) 50%,rgba(255,255,255,0) 100%);
+  transform:skewX(-25deg);
+  transition:all 0.8s ease;
+  opacity:0;
+}
+.collection-item:hover::before {left:130%;opacity:1;}
+.collection-item.revealed {opacity:1;transform:translateY(0);}
+
+/* ABOUT US */
+.about-us-wrapper { max-width:1200px; margin:0 auto; padding:0 2rem; }
+.about-us-list { display:flex; flex-direction:column; gap:60px; }
+.about-us-item { display:flex; align-items:center; gap:40px; opacity:1; transform:translateY(40px); transition: all 1s ease-out; }
+.about-us-item.reverse { flex-direction: row-reverse; }
+.about-us-item img { width:50%; height:300px; object-fit:cover; border-radius:20px; box-shadow:0 10px 25px rgba(0,0,0,0.15); transform:translateX(-60px); transition: all 1s ease-out; }
+.about-us-item.reverse img { transform:translateX(60px); }
+.about-us-text { width:50%; transform:translateX(60px); transition: all 1s ease-out; }
+.about-us-item.reverse .about-us-text { transform:translateX(-60px); }
+.about-us-item.revealed img { transform:translateX(0); opacity:1; }
+.about-us-item.revealed .about-us-text { transform:translateX(0); opacity:1; }
+.about-us-text h3 { font-size:32px; margin-bottom:10px; }
+.about-us-text p { font-size:18px; line-height:1.6; }
+
+/* NEW HEADING ANIMATIONS */
+.section-heading {
+  font-size: 80px;
+  font-weight: 500;
+  color: #000;
+  margin: 60px 2rem 40px;
+  text-align: left;
+  opacity: 0;
+  transform: scale(0.7) translateY(40px);
+  transition: all 1s ease-out;
+}
+.section-heading.revealed {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  animation: popIn 1s ease forwards;
+}
+.about-heading.revealed { animation: popIn 1s ease forwards; }
+.feedback-heading.revealed { animation: bounceIn 1s ease forwards; }
+@keyframes popIn {
+  0% { transform: scale(0.6) translateY(40px); opacity: 0; }
+  50% { transform: scale(1.1) translateY(-10px); opacity: 1; }
+  100% { transform: scale(1) translateY(0); }
+}
+@keyframes bounceIn {
+  0% { transform: scale(0.5) translateY(50px); opacity: 0; }
+  60% { transform: scale(1.2) translateY(-15px); opacity: 1; }
+  100% { transform: scale(1) translateY(0); }
+}
+
+/* FEEDBACKS STYLING */
+.feedback-wrapper {
+  max-width: 1100px;
+  margin: 60px 0 60px 9rem; /* Slightly shifted right */
+  padding: 0 2rem;
+}
+
+.feedback-heading {
+  font-size: 80px;
+  font-weight: 500;
+  color: #000;
+  margin: 60px 2rem 40px;
+  text-align: left;
+  opacity: 0;
+  transform: scale(0.7) translateY(40px);
+  transition: all 1s ease-out;
+}
+
+.feedback-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 30px;
+}
+
+.feedback-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 30px 25px;
+  border-radius: 20px;
+  background-color: var(--bg, #f0f0f0);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+  opacity: 0;
+  transform: translateY(50px) translateX(0);
+  transition: all 0.7s ease-out;
+}
+
+.feedback-item img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.feedback-text h4 {
+  font-size: 22px;
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+.feedback-text p {
+  font-size: 17px;
+  color: #444;
+  line-height: 1.6;
+}
+
+.feedback-item.revealed {
+  opacity: 1;
+  transform: translateY(0) translateX(20px);
+  transition-delay: var(--delay);
+}
+
+/* Animate heading */
+@keyframes inflateText {
+  0% { transform: scale(0.8) translateX(20px); opacity: 0; }
+  50% { transform: scale(1.2) translateX(10px); opacity: 1; }
+  100% { transform: scale(1) translateX(0); opacity: 1; }
+}
+
+/* MOBILE RESPONSIVE */
+@media(max-width:768px){
+  .feedback-wrapper { margin-left: 2rem; }
+  .feedback-item { padding: 25px 20px; }
+  .feedback-list { grid-template-columns: 1fr; }
+}
+
+/* KEYFRAMES */
+@keyframes imageIn{0%{opacity:0;transform:perspective(800px) rotateY(-10deg) scale(0.85);}100%{opacity:1;transform:perspective(800px) rotateY(0deg) scale(1);}}
+@keyframes textIn{0%{opacity:0;transform:translateX(60px);}100%{opacity:1;transform:translateX(0);}}
+
+
+@keyframes fadeIn{0%{transform:translateY(20px);opacity:0}100%{transform:translateY(0);opacity:1}}
+@keyframes floatLink{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* Remove unwanted horizontal scrollbar */
+html, body {
+  overflow-x: hidden;
+}
+/* ==== Glowing Cursor ==== */
+
+
+html, body {
+  cursor: none !important;
+}
+
+
+/* Bright core of the cursor */
+.cursor-core {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 25px;
+  height: 25px;
+  border: 2px solid black; /* Dark border for visibility */
+  background: rgba(255, 255, 255, 0.3); /* Light fill */
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference; /* Makes it adapt to background contrast */
+  transition: transform 0.15s ease;
+}
+
+/* Glowing trailing blur */
+.cursor-trail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgb(6, 168, 248) 0%, rgb(2, 165, 247) 70%);
+  mix-blend-mode: screen;
+  /* filter: blur(12px); */
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+}
+
+/* Expansion on hover */
+.cursor-core.hovered,
+.cursor-trail.hovered {
+  width: 40px;
+  height: 40px;
+}
+
+/* ===== Footer Styling ===== */
+.footer-section {
+  background: #fff;
+  color: #000;
+  padding: 60px 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  max-width: 1200px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.footer-image img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 30px;
+}
+
+.footer-text h2 {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.footer-text p {
+  font-size: 1rem;
+  margin: 4px 0;
+}
+
+.footer-text a {
+  color: #0078ff;
+  text-decoration: none;
+}
+
+.footer-text a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  .footer-image img {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+}
+
+.svg-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 1;
+  z-index: 999;
+}
+#scrollLine line {
+  stroke-dasharray: 3000;      /* total line length */
+  stroke-dashoffset: 3000;     /* start hidden */
+  /* filter: drop-shadow(0 0 6px rgb(6,168,248)); */
+  transition: stroke-dashoffset 0.25s ease-out;
+  filter: drop-shadow(0 0 8px rgb(6,168,248)) drop-shadow(0 0 15px rgba(6,168,248,0.5));
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+footer, .footer-section {
+  margin: 0 !important;
+  padding-bottom: 40px !important;
+}
+
+html, body {
+  height: auto;
+}
+
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">MyLogo</div>
+  <div class="nav-text-slider"><div class="inner"><p>Unleash the machine built to defy limits,<br>where luxury meets adrenaline<br>in perfect harmony</p></div></div>
+  <div class="nav-right">
+    <button class="menu-btn" id="menuBtn">Menu</button>
+    <button class="fancy-button">Sign Up</button>
+  </div>
+  <div class="dropdown" id="dropdownMenu">
+    <a href="#">Home</a><a href="#">About Us</a><a href="#">Contact</a><a href="#">Projects</a>
+  </div>
+</nav>
+
+<!-- HERO VIDEO -->
+<div class="video-wrapper">
+  <video autoplay muted loop playsinline>
+    <source src="Car_video1.mp4" type="video/mp4">
+  </video>
+</div>
+
+<!-- TYPING + SVG -->
+<div class="text-svg-wrapper">
+  <div class="below-video-text" id="typingText"></div>
+  <div class="svg-container" aria-hidden="true">
+  <svg id="scrollLine" width="1" height="100%" viewBox="0 0 70 3000"
+       style="position: fixed; left: 40px; top: 0; z-index: 999; pointer-events: none;">
+    <line x1="3" y1="0" x2="3" y2="2000"
+          stroke="rgb(6,168,248)"
+          stroke-width="1"
+          stroke-linecap="round" />
+  </svg>
+</div>
+
+</div>
+
+<!-- FEATURE SECTION -->
+<div class="feature-section">
+  <div class="feature-video-wrapper">
+    <video autoplay muted loop playsinline>
+      <source src="Car_video2.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="below-typing-text">
+    Designed for speed, precision, and control, our sports cars are engineered to dominate any road. With state-of-the-art technology and custom-tuned engines, each ride is a symphony of power and performance. Whether on track or the open road, the experience is nothing short of extraordinary.
+    <br><br>
+    <button class="fancy-button">About Us</button>
+  </div>
+</div>
+
+<!-- FEATURED WORK -->
+<div class="featured-work-text">Featured Work</div>
+<div class="featured-list">
+  <div class="featured-item">
+    <img src="Car1.png" alt="Model One">
+    <div class="featured-item-text"><h3>Model One</h3><p>The ultimate blend of design and performance, delivering thrilling acceleration and unmatched handling.</p></div>
+  </div>
+  <div class="featured-item">
+    <img src="Car2.png" alt="Model Two">
+    <div class="featured-item-text"><h3>Model Two</h3><p>Crafted for comfort and class, this model redefines what it means to drive in style.</p></div>
+  </div>
+  <div class="featured-item">
+    <img src="Car3.png" alt="Model Three">
+    <div class="featured-item-text"><h3>Model Three</h3><p>Inspired by aerodynamics, engineered for power — built to rule both road and track.</p></div>
+  </div>
+  <div class="featured-item">
+    <img src="Car4.png" alt="Model Four">
+    <div class="featured-item-text"><h3>Model Four</h3><p>Pure racing DNA — a masterpiece of precision and agility, born to outperform every expectation.</p></div>
+  </div>
+  <div class="featured-item">
+    <img src="Car5.png" alt="Model Five">
+    <div class="featured-item-text"><h3>Model Five</h3><p>Where innovation meets elegance — designed to inspire awe at every glance.</p></div>
+  </div>
+  <div class="featured-item">
+    <img src="Car6.png" alt="Model Six">
+    <div class="featured-item-text"><h3>Model Six</h3><p>The pinnacle of engineering — a car that sets new benchmarks in performance and luxury.</p></div>
+  </div>
+</div>
+
+<!-- COLLECTION -->
+<div class="collection-wrapper">
+  <div class="collection-heading">Our Collection</div>
+  <div class="collection-gallery">
+    <div class="collection-item"><img src="bike1.png" alt="bike 1"></div>
+    <div class="collection-item"><img src="bike2.png" alt="bike 2"></div>
+    <div class="collection-item"><img src="bike3.png" alt="bike 3"></div>
+    <div class="collection-item"><img src="bike4.png" alt="bike 4"></div>
+    <div class="collection-item"><img src="bike5.png" alt="bike 5"></div>
+    <div class="collection-item"><img src="bike6.png" alt="bike 6"></div>
+    <div class="collection-item"><img src="bike7.png" alt="bike 7"></div>
+    <div class="collection-item"><img src="bike8.png" alt="bike 8"></div>
+    <div class="collection-item"><img src="bike9.png" alt="bike 9"></div>
+    <div class="collection-item"><img src="bike10.png" alt="bike 10"></div>
+  </div>
+</div>
+
+<!-- ABOUT US -->
+<div class="about-us-wrapper">
+  <h2 class="section-heading about-heading">About Us</h2>
+  <div class="about-us-list">
+    <div class="about-us-item">
+      <img src="p1.png" alt="Our Team">
+      <div class="about-us-text">
+        <h3>Our Mission</h3>
+        <p>We aim to design high-performance cars that blend luxury with adrenaline, delivering unforgettable experiences on every ride.</p>
+      </div>
+    </div>
+    <div class="about-us-item reverse">
+      <img src="p2.png" alt="Design">
+      <div class="about-us-text">
+        <h3>Design Philosophy</h3>
+        <p>Every curve, line, and detail is meticulously crafted to create vehicles that are not only fast but also breathtakingly beautiful.</p>
+      </div>
+    </div>
+    <div class="about-us-item">
+      <img src="p3.png" alt="Innovation">
+      <div class="about-us-text">
+        <h3>Innovation</h3>
+        <p>From cutting-edge engineering to advanced materials, we continuously push the boundaries of automotive innovation.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEEDBACKS -->
+<div class="feedback-wrapper">
+  <h2 class="section-heading feedback-heading">Feedbacks</h2>
+  <div class="feedback-list">
+    <div class="feedback-item" style="--delay:0s; --bg:#FEE2E2;">
+      <img src="about1.png" alt="Person 1">
+      <div class="feedback-text">
+        <h4>John Doe</h4>
+        <p>Absolutely stunning cars! The design and performance are unmatched.</p>
+      </div>
+    </div>
+
+    <div class="feedback-item" style="--delay:0.2s; --bg:#E0F7FA;">
+      <img src="about2.png" alt="Person 2">
+      <div class="feedback-text">
+        <h4>Jane Smith</h4>
+        <p>The attention to detail is incredible. Every ride feels luxurious and thrilling.</p>
+      </div>
+    </div>
+
+    <div class="feedback-item" style="--delay:0.4s; --bg:#FFF3E0;">
+      <img src="about3.png" alt="Person 3">
+      <div class="feedback-text">
+        <h4>Michael Ray</h4>
+        <p>From sound to speed, everything screams perfection. A true driver’s dream!</p>
+      </div>
+    </div>
+
+    <div class="feedback-item" style="--delay:0.6s; --bg:#EDE7F6;">
+      <img src="about3.png" alt="Person 4">
+      <div class="feedback-text">
+        <h4>Michael Ray</h4>
+        <p>From sound to speed, everything screams perfection. A true driver’s dream!</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- ===== Footer Section ===== -->
+<footer class="footer-section">
+  <div class="footer-content">
+    <div class="footer-image">
+      <img src="my-image.png" alt="Developer Image" />
+    </div>
+    <div class="footer-text">
+      <h2>Developed by Ananjay Goyal</h2>
+      <p>Phone: +91-9045314159</p>
+      <p>© 2025 All Rights Reserved</p>
+    </div>
+  </div>
+</footer> 
+
+<!-- Glowing Cursor Elements -->
+<div class="cursor-core"></div>
+<div class="cursor-trail"></div>
+
+<script>
+// DROPDOWN
+const menuBtn = document.getElementById('menuBtn');
+const dropdownMenu = document.getElementById('dropdownMenu');
+
+function positionDropdown() {
+  const rect = menuBtn.getBoundingClientRect();
+  dropdownMenu.style.left = `${rect.left + window.pageXOffset}px`;
+  dropdownMenu.style.top = `${rect.bottom + window.pageYOffset + 8}px`;
+}
+
+menuBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  const isOpen = dropdownMenu.classList.toggle('show');
+  menuBtn.textContent = isOpen ? 'Close' : 'Menu';
+  positionDropdown();
+});
+
+window.addEventListener('resize', () => {
+  if (dropdownMenu.classList.contains('show')) positionDropdown();
+});
+
+document.addEventListener('click', e => {
+  if (!menuBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+    dropdownMenu.classList.remove('show');
+    menuBtn.textContent = 'Menu';
+  }
+});
+
+// TYPING
+const lines = ["Beyond visions", "within reach"];
+const typingText = document.getElementById("typingText");
+let started = false;
+
+function typeLine(lineIndex = 0, charIndex = 0) {
+  if (lineIndex < lines.length) {
+    if (charIndex < lines[lineIndex].length) {
+      typingText.innerHTML += lines[lineIndex].charAt(charIndex);
+      setTimeout(() => typeLine(lineIndex, charIndex + 1), 100);
+    } else {
+      typingText.innerHTML += "<br>";
+      setTimeout(() => typeLine(lineIndex + 1, 0), 400);
+    }
+  }
+}
+
+const observerText = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting && !started) {
+    started = true;
+    typeLine();
+  }
+}, { threshold: 0.6 });
+
+observerText.observe(typingText);
+
+// FEATURED WORK reveal & cylinder effect
+const featuredTitle = document.querySelector('.featured-work-text');
+const featuredList = document.querySelector('.featured-list');
+const featuredItems = document.querySelectorAll('.featured-item');
+
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('revealed');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.25 });
+
+if (featuredTitle) revealObserver.observe(featuredTitle);
+featuredItems.forEach(item => revealObserver.observe(item));
+
+window.addEventListener('scroll', () => {
+  const rect = featuredList.getBoundingClientRect();
+  const progress = Math.min(Math.max((window.innerHeight - rect.top) / (window.innerHeight + rect.height), 0), 1);
+  const rotation = (progress - 0.5) * 80;
+  featuredList.style.transform = `rotateX(${rotation}deg)`;
+});
+
+// COLLECTION reveal
+const collectionHeading = document.querySelector('.collection-heading');
+const collectionItems = document.querySelectorAll('.collection-item');
+
+const collectionObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('revealed');
+      collectionObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+if (collectionHeading) collectionObserver.observe(collectionHeading);
+collectionItems.forEach(item => collectionObserver.observe(item));
+
+// UNIVERSAL REVEAL
+function revealOnScroll(elements) {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  elements.forEach(el => {
+    observer.observe(el);
+    if (el.getBoundingClientRect().top < window.innerHeight) {
+      el.classList.add('revealed');
+      observer.unobserve(el);
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  revealOnScroll(document.querySelectorAll('.section-heading, .about-us-item, .feedback-item'));
+});
+
+// FEEDBACKS APPEAR ONE BY ONE
+const feedbackItems = document.querySelectorAll('.feedback-item');
+const feedbackObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('revealed');
+      feedbackObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+feedbackItems.forEach(item => feedbackObserver.observe(item));
+
+// Animate heading when it comes into view
+const feedbackHeading = document.querySelector('.feedback-heading');
+const headingObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      feedbackHeading.style.animationPlayState = 'running';
+      headingObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+headingObserver.observe(feedbackHeading);
+
+// ===== Neon Cursor Trail Animation =====
+const cursorCore = document.querySelector('.cursor-core');
+const cursorTrail = document.querySelector('.cursor-trail');
+
+let mouseX = 0, mouseY = 0;
+let coreX = 0, coreY = 0;
+let trailX = 0, trailY = 0;
+
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+function animateCursor() {
+  // Core follows fast
+  coreX += (mouseX - coreX) * 0.25;
+  coreY += (mouseY - coreY) * 0.25;
+
+  // Trail follows slower (lag effect)
+  trailX += (mouseX - trailX) * 0.1;
+  trailY += (mouseY - trailY) * 0.1;
+
+  cursorCore.style.transform = `translate(${coreX}px, ${coreY}px)`;
+  cursorTrail.style.transform = `translate(${trailX}px, ${trailY}px)`;
+
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+// Hover effects for interactivity
+const hoverTargets = document.querySelectorAll('a, button, img, .menu-btn, .fancy-button');
+hoverTargets.forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursorCore.classList.add('hovered');
+    cursorTrail.classList.add('hovered');
+  });
+  el.addEventListener('mouseleave', () => {
+    cursorCore.classList.remove('hovered');
+    cursorTrail.classList.remove('hovered');
+  });
+});
+
+
+window.addEventListener("scroll", () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const scrollPercent = scrollTop / (docHeight*30);
+
+  const line = document.querySelector("#scrollLine line");
+  const dashLength = 3000; // must match stroke-dasharray
+  const drawAmount = dashLength * scrollPercent;
+
+  line.style.strokeDashoffset = dashLength - drawAmount;
+});
+
+
+
+</script>
+
+
+</body>
+</html>
+ 

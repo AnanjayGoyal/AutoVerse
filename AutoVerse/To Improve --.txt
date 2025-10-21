@@ -1,0 +1,6 @@
+Remaining Tasks --
+
+1. Separate each section by different color s.ades.
+2. Improve svg-line.
+3. Make the Buttons working 
+
